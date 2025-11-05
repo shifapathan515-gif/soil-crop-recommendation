@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil Info & Crop Recommendation</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f7faf7; margin: 40px; color: #0f172a; }
+    h1 { color: #2b7a3e; }
+    form { background-color: #ffffff; padding: 20px; border-radius: 10px; width: 350px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    input, select { width: 100%; padding: 8px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { background-color: #2b7a3e; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background-color: #25632f; }
+    #result { margin-top: 20px; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); width: 350px; }
+  </style>
+</head>
+<body>
+
+  <h1>Soil Information & Crop Recommendation</h1>
+  <p>Enter your soil details to get soil type and suitable Indian crops.</p>
+
+  <form id="soilForm">
+    <label for="ph">Soil pH:</label>
+    <input type="number" id="ph" name="ph" step="0.1" min="3" max="10" required>
+
+    <label for="moisture">Moisture (%):</label>
+    <input type="number" id="moisture" name="moisture" min="0" max="100" required>
+
+    <label for="nitrogen">Nitrogen (mg/kg):</label>
+    <input type="number" id="nitrogen" name="nitrogen" required>
+
+    <button type="button" onclick="analyzeSoil()">Get Recommendation</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    function analyzeSoil() {
+      const ph = parseFloat(document.getElementById('ph').value);
+      const moisture = parseFloat(document.getElementById('moisture').value);
+      const nitrogen = parseFloat(document.getElementById('nitrogen').value);
+
+      let soilType = '';
+      let crops = '';
+      let recommendation = '';
+
+      if (ph < 6.0) {
+        soilType = 'Acidic Soil';
+        crops = 'Tea, Potato, Pineapple, Rice';
+        recommendation = 'Apply agricultural lime to neutralize acidity.';
+      } else if (ph >= 6.0 && ph <= 7.5) {
+        soilType = 'Neutral Soil';
+        crops = 'Wheat, Maize, Pulses, Cotton, Vegetables';
+        recommendation = 'Maintain organic content and regular irrigation.';
+      } else {
+        soilType = 'Alkaline Soil';
+        crops = 'Barley, Beetroot, Sugar Beet, Cotton';
+        recommendation = 'Use gypsum and organic manure to improve soil quality.';
+      }
+
+      if (moisture < 30) {
+        recommendation += ' Increase irrigation frequency.';
+      } else if (moisture > 70) {
+        recommendation += ' Improve drainage to avoid waterlogging.';
+      }
+
+      if (nitrogen < 50) {
+        recommendation += ' Add nitrogen-rich fertilizers (e.g., urea, compost).';
+      } else if (nitrogen > 200) {
+        recommendation += ' Avoid excessive fertilization to prevent nutrient imbalance.';
+      }
+
+      document.getElementById('result').innerHTML = `
+        <h2>Soil Analysis Result</h2>
+        <p><strong>Soil Type:</strong> ${soilType}</p>
+        <p><strong>Suitable Crops:</strong> ${crops}</p>
+        <p><strong>Recommendation:</strong> ${recommendation}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
